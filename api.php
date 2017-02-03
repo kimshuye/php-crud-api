@@ -2311,3 +2311,34 @@ class PHP_CRUD_API {
 // 	'database'=>'data/blog.db',
 // ));
 // $api->executeCommand();
+
+$api = new PHP_CRUD_API(array(
+    'dbengine'=>'MySQL',
+    'username'=>'kpstorer_gas',
+    'password'=>'AlnULurEo',
+    'database'=>'kpstorer_gas',
+// for connectivity (defaults to localhost):
+    'hostname'=>'localhost',
+    'port'=>null,
+    'socket'=>null,
+    'charset'=>'utf8',
+// callbacks with their default behavior
+    'table_authorizer'=>function($cmd,$db,$tab) { return true; },
+    'record_filter'=>function($cmd,$db,$tab) { return false; },
+    'column_authorizer'=>function($cmd,$db,$tab,$col) { return true; },
+    'tenancy_function'=>function($cmd,$db,$tab,$col) { return null; },
+    'input_sanitizer'=>function($cmd,$db,$tab,$col,$typ,$val) { return $val; },
+    'input_validator'=>function($cmd,$db,$tab,$col,$typ,$val,$ctx) { return true; },
+// configurable options
+    'allow_origin'=>'*',
+    'auto_include'=>true,
+    'extensions'=>true,
+// dependencies (added for unit testing):
+    'db'=>null,
+    'method'=>$_SERVER['REQUEST_METHOD'],
+    'request'=>$_SERVER['PATH_INFO'],
+    'get'=>$_GET,
+    'post'=>file_get_contents('php://input'),
+    'origin'=>$_SERVER['HTTP_ORIGIN'],
+));
+$api->executeCommand();
