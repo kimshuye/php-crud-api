@@ -2254,6 +2254,8 @@ class PHP_CRUD_API {
 // if ($auth->executeCommand()) exit(0);
 // if (empty($_SESSION['user']) || $_GET['csrf']!=$_SESSION['csrf']) {
 //	header('HTTP/1.0 401 Unauthorized');
+//	echo "token Unauthorized<br>";
+//	echo $_SESSION['user'];
 //	exit(0);
 // }
 
@@ -2262,9 +2264,11 @@ class PHP_CRUD_API {
 // $auth = new PHP_API_AUTH(array(
 // 	'authenticator'=>function($user,$pass){ $_SESSION['user']=($user=='admin' && $pass=='admin'); }
 // ));
-// if ($auth->executeCommand()) exit(0);
+
+// if ($auth->executeCommand()) {echo " string "; exit(0);}
 // if (empty($_SESSION['user']) || $_GET['csrf']!=$_SESSION['csrf']) {
 //	header('HTTP/1.0 401 Unauthorized');
+//	echo "adminuser Unauthorized<br>";
 //	exit(0);
 // }
 
@@ -2311,6 +2315,41 @@ class PHP_CRUD_API {
 // 	'database'=>'data/blog.db',
 // ));
 // $api->executeCommand();
+
+/**
+ * @param action   $cmd  'create','read','update','delete','list'
+ * @param database $db   name of your database (e.g. 'northwind')
+ * @param table    $tab  name of the table (e.g. 'customers')
+ * @param column   $col  name of the column (e.g. 'username')
+ * @param type     $typ  type of the column (depends on engine)
+ * @param value    $val  input from the user (e.g. 'johndoe88')
+ * @param context  $ctx  all input fields in this action
+ * @returns string  validation error (if any) or null
+ **/
+/**$cmd='create';
+$db='kpstorer_gas';
+$tab='customers';
+$col='username';
+$typ='MySQL';
+$val='sunadmin';
+$ctx='create';
+**/
+
+
+
+ require 'auth.php'; // from the PHP-API-AUTH project, see: https://github.com/mevdschee/php-api-auth
+ $auth = new PHP_API_AUTH(array(
+ 	'secret'=>'someVeryLongPassPhraseChangeMe',	
+ ));
+
+ if ($auth->executeCommand()) {  	exit(0);  }
+ if (empty($_SESSION['user']) || $_GET['csrf']!=$_SESSION['csrf']) {
+	header('HTTP/1.0 401 Unauthorized');
+	echo "useradmin Unauthorized<br>";
+	echo $_SESSION['user'];
+	exit(0);
+ }
+
 
 $api = new PHP_CRUD_API(array(
     'dbengine'=>'MySQL',
