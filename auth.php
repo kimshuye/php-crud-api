@@ -3,6 +3,8 @@
 
 class PHP_API_AUTH {
 	
+	protected $tokenio;
+
 	public function __construct($config) {
 		extract($config);
 		
@@ -142,10 +144,12 @@ class PHP_API_AUTH {
 			if ($authenticator && isset($input->$username) && isset($input->$password)) {
 				$authenticator($input->$username,$input->$password);
 				if ($no_session) {
-					echo json_encode($this->generateToken($_SESSION,$time,$ttl,$algorithm,$secret));
+					$this->tokenio = $this->generateToken($_SESSION,$time,$ttl,$algorithm,$secret);
+					echo json_encode($this->tokenio);
 				} else {
 					session_regenerate_id();
-					echo json_encode($_SESSION['csrf']);
+					$this->tokenio = $_SESSION['csrf'];
+					echo json_encode($this->tokenio);
 				}
 			} elseif ($secret && isset($input->$token)) {
 				$claims = $this->getVerifiedClaims($input->$token,$time,$leeway,$ttl,$algorithm,$secret);
@@ -154,7 +158,8 @@ class PHP_API_AUTH {
 						$_SESSION[$key] = $value;
 					}
 					session_regenerate_id();
-					echo json_encode($_SESSION['csrf']);
+					$this->tokenio = $_SESSION['csrf'];
+					echo json_encode($this->tokenio);
 				}
 			} else {
 				if (!$no_session) {
@@ -164,5 +169,9 @@ class PHP_API_AUTH {
 			return true;
 		}
 		return false;
+	}
+
+	public function gettoken(){
+		return $this->tokenio;
 	}
 }

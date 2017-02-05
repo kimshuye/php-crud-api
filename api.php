@@ -2337,16 +2337,18 @@ $ctx='create';
 
 
 
- require 'auth.php'; // from the PHP-API-AUTH project, see: https://github.com/mevdschee/php-api-auth
- $auth = new PHP_API_AUTH(array(
- 	'secret'=>'someVeryLongPassPhraseChangeMe',	
- ));
+ require 'auth.php'; 
 
+ $auth = new PHP_API_AUTH(array(
+ 	'secret'=>'someVeryLongPassPhraseChangeMe'
+ 	//'authenticator'=>function($user,$pass){ $_SESSION['user']=($user=='admin' && $pass=='admin'); }
+ ));
  if ($auth->executeCommand()) {  	exit(0);  }
+
  if (empty($_SESSION['user']) || $_GET['csrf']!=$_SESSION['csrf']) {
 	header('HTTP/1.0 401 Unauthorized');
-	echo "useradmin Unauthorized<br>";
-	echo $_SESSION['user'];
+	echo "user Unauthorized<br>";
+	//echo $_SESSION['user'];
 	exit(0);
  }
 
