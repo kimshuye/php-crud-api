@@ -2340,8 +2340,8 @@ $ctx='create';
  require 'auth.php'; 
 
  $auth = new PHP_API_AUTH(array(
- 	'secret'=>'someVeryLongPassPhraseChangeMe'
- 	//'authenticator'=>function($user,$pass){ $_SESSION['user']=($user=='admin' && $pass=='admin'); }
+ 	'secret'=>'someVeryLongPassPhraseChangeMe' 	// By Token
+ 	//'authenticator'=>function($user,$pass){ $_SESSION['user']=($user=='admin' && $pass=='SunAdminminiPump'); } //By User Pass
  ));
  if ($auth->executeCommand()) {  	exit(0);  }
 
